@@ -1,0 +1,38 @@
+3.CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    sex ENUM('male', 'female') NOT NULL,
+    age INT NOT NULL,
+    phone VARCHAR(20) NOT NULL
+  );
+
+  INSERT INTO user (name, sex, age, phone)
+  VALUES ('张三', 'male', 25, '13800138000'),
+         ('李四', 'female', 28, '13900139000'),
+         ('王五', 'male', 30, '13600136000');
+
+4.SELECT * FROM user WHERE age BETWEEN 20 AND 30;
+
+5.DELETE FROM user WHERE name LIKE '%张%';
+
+6.SELECT AVG(age) FROM user;
+
+7.SELECT * FROM user WHERE age BETWEEN 20 AND 30 AND name LIKE '%张%' ORDER BY age DESC;
+
+8.CREATE TABLE team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    teamName VARCHAR(50) NOT NULL
+  );
+
+  CREATE TABLE score (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      teamid INT,
+      userid INT,
+      score INT,
+      FOREIGN KEY (teamid) REFERENCES team(id),
+      FOREIGN KEY (userid) REFERENCES user(id)
+  );
+
+9.SELECT u.* FROM user u JOIN score s ON u.id = s.userid JOIN team t ON s.teamid = t.id WHERE t.teamName = 'ECNU' AND u.age < 20;
+
+10.SELECT t.teamName, IFNULL(SUM(IFNULL(s.score, 0)), 0) AS total_score FROM team t LEFT JOIN score s ON t.id = s.teamid WHERE t.teamName = 'ECNU' GROUP BY t.teamName;
